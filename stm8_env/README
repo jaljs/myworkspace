@@ -1,0 +1,17 @@
+# STM8S103 Development Environment
+
+## install sdcc compiler
+
+```
+sudo add-apt-repository ppa:laczik/ppa
+sudo apt-get update
+sudo apt-get remove sdcc sdcc-libraries
+sudo apt-get install sdcc
+```
+
+## build stm8flash flash tool
+
+```
+cd toos/stm8flash
+make
+```
