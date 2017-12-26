@@ -1,0 +1,20 @@
+======================
+提交新文件方法
+=======================
+添加文件
+git add readme.txt
+提交文件
+git commit -m "wrlte a readme file"
+-m 后面输入的是本次提交的说明
+
+添加多个文件
+git add file1.txt
+git add file2.txt file3.txt
+git commit -m "add 3 flie"
+
+---------------------------------
+
+
+
+
+
