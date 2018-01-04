@@ -10,7 +10,7 @@ import time
 DI = 3	#out
 DO = 5	#
 CS = 7
-PS2_CLK = 11
+PS2_CLK = 10
 
 t=0.00005  # (read clk >2KHz)
 
