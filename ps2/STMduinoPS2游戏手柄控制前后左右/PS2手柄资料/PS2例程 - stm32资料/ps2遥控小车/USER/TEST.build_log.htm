@@ -1,0 +1,64 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: μVision V5.22.0.0
+Copyright (C) 2016 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: zhang Microsoft, Microsoft, LIC=VGX63-A7597-BEFHH-W2LS7-P01Q5-AQNTY
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Plus  Version: 5.22
+Toolchain Path:  D:\Keil_v5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 4 (build 422)
+Assembler:       Armasm.exe V5.06 update 4 (build 422)
+Linker/Locator:  ArmLink.exe V5.06 update 4 (build 422)
+Library Manager: ArmAr.exe V5.06 update 4 (build 422)
+Hex Converter:   FromElf.exe V5.06 update 4 (build 422)
+CPU DLL:         SARMCM3.DLL V5.22
+Dialog DLL:      DARMSTM.DLL V1.67.0.0
+Target DLL:      Segger\JL2CM3.dll V2.99.23.0
+Dialog DLL:      TARMSTM.DLL V1.66.0.0
+ 
+<h2>Project:</h2>
+E:\WORK\芯片资料\PS2解码通讯及例程V1.8\PS2例程 - stm32资料\ps2遥控小车\USER\TEST.uvproj
+Project File Date:  11/09/2016
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 4 (build 422)', folder: 'D:\Keil_v5\ARM\ARMCC\Bin'
+Rebuild target 'Target 1'
+assembling STM32F10x.s...
+compiling sys.c...
+..\SYSTEM\sys\sys.c(1): error:  #5: cannot open source input file "stm32f10x_lib.h": No such file or directory
+  #include <stm32f10x_lib.h>		 
+..\SYSTEM\sys\sys.c: 0 warnings, 1 error
+compiling test.c...
+test.c(1): error:  #5: cannot open source input file "stm32f10x_lib.h": No such file or directory
+  #include <stm32f10x_lib.h>
+test.c: 0 warnings, 1 error
+compiling delay.c...
+..\SYSTEM\delay\delay.c(1): error:  #5: cannot open source input file "stm32f10x_lib.h": No such file or directory
+  #include <stm32f10x_lib.h>
+..\SYSTEM\delay\delay.c: 0 warnings, 1 error
+compiling pstwo.c...
+..\SYSTEM\delay\delay.h(3): error:  #5: cannot open source input file "stm32f10x_lib.h": No such file or directory
+  #include <stm32f10x_lib.h>
+..\Libraries\PS2\pstwo.c: 0 warnings, 1 error
+compiling led.c...
+..\Libraries\LED\led.c(1): error:  #5: cannot open source input file "stm32f10x_lib.h": No such file or directory
+  #include <stm32f10x_lib.h>	   
+..\Libraries\LED\led.c: 0 warnings, 1 error
+compiling usart.c...
+..\SYSTEM\sys\sys.h(3): error:  #5: cannot open source input file "stm32f10x_lib.h": No such file or directory
+  #include <stm32f10x_lib.h>
+..\SYSTEM\usart\usart.c: 0 warnings, 1 error
+compiling motor.c...
+..\SYSTEM\sys\sys.h(3): error:  #5: cannot open source input file "stm32f10x_lib.h": No such file or directory
+  #include <stm32f10x_lib.h>
+..\Libraries\MOTOR\motor.c: 0 warnings, 1 error
+".\TEST.axf" - 7 Error(s), 0 Warning(s).
+Target not created.
+Build Time Elapsed:  00:00:03
+</pre>
+</body>
+</html>
