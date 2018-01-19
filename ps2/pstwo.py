@@ -12,7 +12,7 @@ DO = 5	#
 CS = 7
 PS2_CLK = 10
 
-t=0.00005  # (read clk >2KHz)
+t=0.000005  # (read clk >2KHz)
 
 Handkey =0 
 Comd=[0x01,0x42]
@@ -96,6 +96,7 @@ class pstwo():
 		self.PS2_Cmd(Comd[1])
 		print "comnd[1]--->",Comd[1]
 		GPIO.output(CS,GPIO.HIGH)
+		time.sleep(t)
 		print "DATA[1]--->",hex(Data[1])
 
 		if Data[1]==0x73:
@@ -130,6 +131,7 @@ class pstwo():
 		print "sp2 readdata data1--->",hex(Data[1])
 
 		GPIO.output(CS,GPIO.HIGH)
+		time.sleep(t)
 
 
 
@@ -138,7 +140,7 @@ if __name__ == '__main__':
 
 	sp2 = pstwo()
 	print "init off"
-	sp2.PS2_RedLight()
+	#sp2.PS2_RedLight()
 
 	sp2.PS2_ReadData()
 	print "end"
