@@ -283,7 +283,31 @@ void GPIO_WriteBit(GPIO_TypeDef* GPIOx, GPIO_Pin_TypeDef GPIO_Pin, BitAction GPI
     GPIOx->ODR &= (uint8_t)(~GPIO_Pin);
   }
 }
+/**
+  * @brief  Writes high level to the specified GPIO pins.
+  * @note   The port must be configured in output mode.  
+  * @param  GPIOx : Select the GPIO peripheral number (x = A to I).
+  * @param  PortPins : Specifies the pins to be turned high to the port output.
+  *         data register.
+  * @retval None
+  */
+void GPIO_WriteHigh(GPIO_TypeDef* GPIOx, GPIO_Pin_TypeDef PortPins)
+{
+    GPIOx->ODR |= (uint8_t)PortPins;
+}
 
+/**
+  * @brief  Writes low level to the specified GPIO pins.
+  * @note   The port must be configured in output mode.  
+  * @param  GPIOx : Select the GPIO peripheral number (x = A to I).
+  * @param  PortPins : Specifies the pins to be turned low to the port output.
+  *         data register.
+  * @retval None
+  */
+void GPIO_WriteLow(GPIO_TypeDef* GPIOx, GPIO_Pin_TypeDef PortPins)
+{
+    GPIOx->ODR &= (uint8_t)(~PortPins);
+}
 /**
   * @brief  Writes high level to the specified GPIO pins.
   * @note   The port must be configured in output mode.

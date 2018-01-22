@@ -1,0 +1,209 @@
+/**
+  ******************************************************************************
+  * @file    Project/main.c 
+  * @author  MCD Application Team
+  * @version V2.1.0
+  * @date    18-November-2011
+  * @brief   Main program body
+  ******************************************************************************
+  * @attention
+  *
+  * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+  * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+  * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
+  * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+  * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+  * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+  *
+  * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
+  ******************************************************************************
+  */ 
+
+
+/* Includes ------------------------------------------------------------------*/
+#include "stm8s.h"
+#include "main.h"
+#include "stm8s_uart1.h"
+
+
+
+
+/* Private defines -----------------------------------------------------------*/
+static void Delay(uint32_t nCount);
+static void SYNC_GPIO_Init();
+static void UART1_Send(uint8_t dat);
+static void Init_UART1();
+static void Save_IO_bit();
+
+/* Private function prototypes -----------------------------------------------*/
+uint8_t arrIO[2][100];
+uint32_t p_i=0;
+uint32_t p_j=0;
+
+
+
+#define BY
+/* Private functions ---------------------------------------------------------*/
+
+const uint8_t state_mask = (GPIO_PIN_3 | GPIO_PIN_1);
+const uint8_t state_hi = (GPIO_PIN_3 | GPIO_PIN_1);   
+const uint8_t state_lo = (0);
+#ifdef BY
+const uint8_t state2_mask = (GPIO_PIN_0 | GPIO_PIN_1);
+const uint8_t state2_hi = (GPIO_PIN_0 | GPIO_PIN_1);   
+const uint8_t state2_lo = (0);
+#endif
+
+ void main(void)
+{
+
+
+  uint8_t state=0;  
+  uint8_t last_state=0;   
+  #ifdef BY
+  uint8_t last_state2=0;
+  #endif
+  uint8_t err_time=0;
+  uint8_t right_time=0;
+  
+  SYNC_GPIO_Init();
+  Init_UART1();
+
+ // UART1_Send('s');
+ // UART1_Send('\n');
+ // UART1_Send('\r');
+  
+  /*
+  
+  ..._______________|^^^^^^^^^^^^^^^^|________________|^^^^^^^^^^^^^^^^^|....
+  ..._______|^^^^^^^^^^^^^^^^|________________|^^^^^^^^^^^^^^^^^|________....
+  ...   (1) |  (2)  |   (3)  |  (4)  |  (1)   |  (2)  |  (3)    |   (4) .....
+  
+  state:
+  (1): LOW-LOW
+  (2): LOW-HI
+  (3): HI-HI
+  (4): HI-Low
+  */
+   /* RESET pull high */
+  GPIO_WriteLow(GPIOC, GPIO_PIN_2); 
+  Delay(0xFFFF);
+  GPIO_WriteLow(GPIOC, GPIO_PIN_4);
+  Delay(0x3FFFF);
+  state = 0;                       
+  while(1) {
+    
+    
+    err_time = 0;
+
+    while(
+          (err_time < 0x4) 
+              ) {
+      last_state = (GPIO_ReadInputData(GPIOC) & state_mask); 
+      #ifdef BY
+      last_state2 = (GPIO_ReadInputData(GPIOB) & state2_mask);
+      #endif
+      /* find (1) OR (3) */
+      #ifndef BY
+      if ((last_state == state_lo) || (last_state == state_hi))
+      #else
+      if (((last_state2 == state2_lo) &&(last_state == state_lo)) 
+          || ((last_state2 == state2_hi) && (last_state == state_hi)))   
+      #endif
+      {    
+        if (err_time != 0){
+          right_time++; 
+        }
+        if((right_time > 100) && (state != 0)){
+          state --;
+          right_time =0;                
+             if(err_time>0){err_time--;}
+        }
+        err_time=0; 
+      }else 
+      {
+        err_time++;
+      }   
+    }
+    state ++;
+    right_time = 0;
+    if(state > 6)
+    {
+	//hardware reset 
+      GPIO_WriteHigh(GPIOC, GPIO_PIN_4);
+      GPIO_WriteLow(GPIOC, GPIO_PIN_2); 
+       Delay(0xFFFF);
+      GPIO_WriteLow(GPIOC, GPIO_PIN_4);
+      Delay(0x3FFFF);
+      state = 0;
+    }else{
+      /*
+      soft reset
+      */
+      GPIO_WriteHigh(GPIOC, GPIO_PIN_2);
+      Delay(0x6F);
+      GPIO_WriteLow(GPIOC, GPIO_PIN_2); 
+         
+      Delay(0x6FFFF);
+    }
+  }
+}
+
+static void SYNC_GPIO_Init()
+{
+#ifdef BY
+   GPIO_Init(GPIOB, (GPIO_Pin_TypeDef)GPIO_PIN_0, GPIO_MODE_IN_PU_NO_IT );
+   GPIO_Init(GPIOB, (GPIO_Pin_TypeDef)GPIO_PIN_1, GPIO_MODE_IN_PU_NO_IT );
+#endif
+   GPIO_Init(GPIOC, (GPIO_Pin_TypeDef)GPIO_PIN_3, GPIO_MODE_IN_PU_NO_IT );
+   GPIO_Init(GPIOC, (GPIO_Pin_TypeDef)GPIO_PIN_1, GPIO_MODE_IN_PU_NO_IT );
+   GPIO_Init(GPIOC, (GPIO_Pin_TypeDef)GPIO_PIN_2, GPIO_MODE_OUT_PP_LOW_FAST);
+   GPIO_Init(GPIOC, (GPIO_Pin_TypeDef)GPIO_PIN_4, GPIO_MODE_OUT_PP_HIGH_FAST   );
+}
+
+
+static void Delay(uint32_t nCount)
+{
+    /* Decrement nCount value */
+    while (nCount != 0)
+    {
+        nCount--;
+    }
+
+}
+
+static void Init_UART1(void)
+{
+	UART1_DeInit();
+	UART1_Init((u32)9600, UART1_WORDLENGTH_8D, UART1_STOPBITS_1, UART1_PARITY_NO, UART1_SYNCMODE_CLOCK_DISABLE, UART1_MODE_TX_ENABLE);
+//	UART1_Cmd(ENABLE);
+}
+static void UART1_Send(uint8_t dat)
+{
+  while(( UART1_GetFlagStatus(UART1_FLAG_TXE)==RESET));
+	
+	UART1_SendData8(dat);
+	
+}
+#ifdef USE_FULL_ASSERT
+
+/**
+  * @brief  Reports the name of the source file and the source line number
+  *   where the assert_param error has occurred.
+  * @param file: pointer to the source file name
+  * @param line: assert_param error line source number
+  * @retval : None
+  */
+void assert_failed(uint8_t* file, uint32_t line)
+{ 
+  /* User can add his own implementation to report the file name and line number,
+     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+
+  /* Infinite loop */
+  while (1)
+  {
+  }
+}
+#endif
+
+/******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/
