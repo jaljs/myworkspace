@@ -24,6 +24,7 @@ git pull 把远程的代码更新到工作台
 
 
 
+git checkout --w document  恢复文件与版本库文件一致 
 
 
 git 常用命令：
