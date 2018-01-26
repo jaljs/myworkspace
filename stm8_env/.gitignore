@@ -7,3 +7,5 @@
 *.lk
 *.rst
 stm8flash
+*.swp
+*~

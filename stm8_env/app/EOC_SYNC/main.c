@@ -63,6 +63,13 @@ void clock_cycle()
     Delay(1);
 }
 
+
+
+void rffc2071a_hw_rst()
+{
+
+}
+
 uint16_t rffc2071a_spi_read(uint8_t addr)
 {
     uint16_t data =0;
@@ -222,24 +229,25 @@ void main(void)
   SYNC_GPIO_Init();
   //Init_UART1();
   Delay(10000);
-  Delay(10000);
   
   GPIO_WriteLow(GPIOC, GPIO_Pin_4);
 	
-  GPIO_WriteHigh(GPIOD, GPIO_Pin_1);
-  Delay(0x10000);
-  GPIO_WriteHigh(GPIOD, GPIO_Pin_0);
+  GPIO_WriteHigh(GPIOD, GPIO_Pin_1);//set enbl high
+  Delay(0x1000);
+// hw reset device  
   GPIO_WriteLow(GPIOD, GPIO_Pin_0);
+  Delay(0x1000);
   GPIO_WriteHigh(GPIOD, GPIO_Pin_0);
-  Delay(0x10000);
+//------------------------------------  
+  Delay(0x1000);
   SPI_DIS; 
 
-#if 0
+#if 1
 // set up device 
-  rffc2071a_spi_read(0x00);
   
-  rb = rffc2071a_spi_read(0x0f);
+  rb = rffc2071a_spi_read(0x0f); //not use  do the spi bug
   rffc2071a_spi_write(0xf, rb|0x00);
+//  rffc2071a_spi_write(0x00,0xbef9);
   
   rffc2071a_spi_write(8, 0xff00|(127 << 8));
 
@@ -247,25 +255,17 @@ void main(void)
   rffc2071a_spi_write(5, 0xacbf|(12 << 8));
   rffc2071a_spi_write(0x1e, 5|4);// TESTrgbyp = 1
 
-  //rffc2071a_spi_write(0x15, 0x8002);// 3wire bus
-  //rffc2071a_spi_write(0x16, 0x0000);// gpo/gate  
-  rffc2071a_spi_write(0xb, 0x4800|(1<<15)); //full duplex 1; p1mixidd 3, p2mixidd 3
 
 
-  rffc2071a_spi_write(0x16, 1);
-// enable device
-//  vcoset = rffc2071a_spi_read(8);
-//  rffc2071a_spi_write(8, (vcoset | 0x8000));//auto VCO
-//  pllset = rffc2071a_spi_read(0);
-//  rffc2071a_spi_write(0, ((pllset& 0xfffe) | 3));//pllcpl
-  //P1 test 314
-  rffc2071a_spi_write(0xc, (48<<7)|  (16<<4)| (4<<2));
-  rffc2071a_spi_write(0xd, 0x550a);
-  rffc2071a_spi_write(0xe, 0x25 << 8);
-  //P2 test 314
-  rffc2071a_spi_write(0xf, (48<<7)|  (16<<4)| (4<<2));
-  rffc2071a_spi_write(0x10, 0x550a);
-  rffc2071a_spi_write(0x11, 0x25 << 8);
+  rffc2071a_spi_write(0x16, 1);// set led lock
+  //P1 test 
+  rffc2071a_spi_write(0xc,0x15a8);
+  rffc2071a_spi_write(0xd, 0x4000);
+  rffc2071a_spi_write(0xe, 0x0000);
+  //P2 test
+  rffc2071a_spi_write(0xf, 0x15aa);
+  rffc2071a_spi_write(0x10, 0x4000);
+  rffc2071a_spi_write(0x11, 0x0000);
 
   //loop filter
 //  rffc2071a_spi_write(6, 0x0000);
@@ -280,7 +280,12 @@ void main(void)
 //  rffc2071a_spi_write(0x10, 0xaa15);
 //  rffc2071a_spi_write(0x11, 0x6a << 8);
 
+  rffc2071a_spi_write(0x0b, 0x7e00);//tx rx mode
+ //low phase noise test
+  rffc2071a_spi_write(0x00, 0xfff9);//
+  
 
+  rffc2071a_spi_write(0x09,0x8228 );//pll relock
 
 
 
@@ -302,36 +307,36 @@ void main(void)
   rffc2071a_spi_write(0x08, 0xff00);
   rffc2071a_spi_write(0x09, 0x8220);
   rffc2071a_spi_write(0x0a, 0x0202);
-  rffc2071a_spi_write(0x0b, 0xc800);
+  rffc2071a_spi_write(0x0b, 0xc800);//tx rx mode
+//  rffc2071a_spi_write(0x0b, 0x4800);//full mode 
   rffc2071a_spi_write(0x0c, 0x2024);
   rffc2071a_spi_write(0x0d, 0x0000);
   rffc2071a_spi_write(0x0e, 0x0000);
-  rffc2071a_spi_write(0x0f, 0x2026);
-  rffc2071a_spi_write(0x10, 0x0000);
+ //LO set ---------------------------
+  rffc2071a_spi_write(0x0f, 0x15a8);
+  rffc2071a_spi_write(0x10, 0x4000);
   rffc2071a_spi_write(0x11, 0x0000);
-  rffc2071a_spi_write(0x12, 0x2a80);
-  rffc2071a_spi_write(0x13, 0x0000);
+  rffc2071a_spi_write(0x12, 0x15aa);
+  rffc2071a_spi_write(0x13, 0x4000);
   rffc2071a_spi_write(0x14, 0x0000);
+//-------------------------------------- 
   rffc2071a_spi_write(0x15, 0x0000);
-  rffc2071a_spi_write(0x16, 0x0000);
+  rffc2071a_spi_write(0x16, 0x0001);//set lock 
   rffc2071a_spi_write(0x17, 0x4900);
   rffc2071a_spi_write(0x18, 0x0281);
   rffc2071a_spi_write(0x19, 0xf00f);
   rffc2071a_spi_write(0x1a, 0x0000);
   rffc2071a_spi_write(0x1b, 0x0005);
+
+  rffc2071a_spi_write(0x09,0x82a8 );//set pllst
+  rffc2071a_spi_write(0x09,0x8228 );//pll relock
+
+
+
+
+//  Delay(1000);
   
-
-  if(rffc2071a_spi_read(0x1b)==0x0005)
-  	GPIO_WriteHigh(GPIOC, GPIO_Pin_4);
-  else
-	GPIO_WriteLow(GPIOC,GPIO_Pin_4);
-
-  rffc2071a_spi_write(0x09, 0x8228);
-  rffc2071a_spi_write(0x09,0x8220 );
-
-
-
-
+ // GPIO_WriteLow(GPIOD, GPIO_Pin_1);
 
 
 
