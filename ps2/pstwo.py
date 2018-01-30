@@ -109,6 +109,7 @@ class pstwo():
 		byte = 0
 		ref=0x01
 		GPIO.output(CS,GPIO.LOW)
+		time.sleep(t)
 		self.PS2_Cmd(Comd[0])
 		self.PS2_Cmd(Comd[1])
 
@@ -122,7 +123,7 @@ class pstwo():
 			#	print "ref-------->",ref
 				if GPIO.input(DI):
 					Data[byte] = (1<<(ref-1))|Data[byte]
-				time.sleep(t)
+			#	time.sleep(t)   #这个延时影响遥控器模式切换
 
 			time.sleep(t)
 			GPIO.output(PS2_CLK,GPIO.HIGH)
@@ -138,42 +139,13 @@ class pstwo():
 if __name__ == '__main__':
 	print "hello world"
 
+
 	sp2 = pstwo()
-	print "init off"
-	#sp2.PS2_RedLight()
+	while 1:
+		time.sleep(0.1)
+	#	a=sp2.PS2_RedLight()
+   	#	print "a=",a
 
-	sp2.PS2_ReadData()
-	print "end"
-
-
-
+		sp2.PS2_ReadData()
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
