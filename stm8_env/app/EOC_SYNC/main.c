@@ -41,17 +41,17 @@ static void Init_UART1();
 static void Delay_t();
 
 /* SPI GPIO define */
-#define SPI_CLOCK(a)  a(GPIOC, GPIO_Pin_1);
+#define SPI_CLOCK(a)  a(GPIOB, GPIO_Pin_1);
 
-#define SPI_DATA(a)   a(GPIOC, GPIO_Pin_0);
+#define SPI_DATA(a)   a(GPIOB, GPIO_Pin_0);
 
 #define SPI_READ_DATA ((GPIO_ReadInputData(GPIOC) >> 0) & 1)
 
-#define SPI_EN        GPIO_WriteLow(GPIOC, GPIO_Pin_2);
-#define SPI_DIS       GPIO_WriteHigh(GPIOC, GPIO_Pin_2);
+#define SPI_EN        GPIO_WriteLow(GPIOB, GPIO_Pin_2);
+#define SPI_DIS       GPIO_WriteHigh(GPIOB, GPIO_Pin_2);
 
-#define SPI_READ      GPIO_Init(GPIOC, (GPIO_Pin_TypeDef)GPIO_Pin_0, GPIO_Mode_In_FL_No_IT);
-#define SPI_WRITE     GPIO_Init(GPIOC, (GPIO_Pin_TypeDef)GPIO_Pin_0, GPIO_Mode_Out_PP_Low_Fast);
+#define SPI_READ      GPIO_Init(GPIOB, (GPIO_Pin_TypeDef)GPIO_Pin_0, GPIO_Mode_In_FL_No_IT);
+#define SPI_WRITE     GPIO_Init(GPIOB, (GPIO_Pin_TypeDef)GPIO_Pin_0, GPIO_Mode_Out_PP_Low_Fast);
 
 void clock_cycle()
 {
@@ -230,14 +230,25 @@ void main(void)
   //Init_UART1();
   Delay(10000);
   
-  GPIO_WriteLow(GPIOC, GPIO_Pin_4);
+//  GPIO_WriteLow(GPIOC, GPIO_Pin_4);
+
+
 	
-  GPIO_WriteHigh(GPIOD, GPIO_Pin_1);//set enbl high
+  GPIO_WriteHigh(GPIOD, GPIO_Pin_2);//set enbl high
   Delay(0x1000);
+
+//txrx mode set
+
+//  GPIO_WriteLow(GPIOD, GPIO_Pin_0);  // RX
+  GPIO_WriteHigh(GPIOD, GPIO_Pin_1);  //tx
+
+
+//------------
+
 // hw reset device  
-  GPIO_WriteLow(GPIOD, GPIO_Pin_0);
+  GPIO_WriteLow(GPIOD, GPIO_Pin_1);
   Delay(0x1000);
-  GPIO_WriteHigh(GPIOD, GPIO_Pin_0);
+  GPIO_WriteHigh(GPIOD, GPIO_Pin_1);
 //------------------------------------  
   Delay(0x1000);
   SPI_DIS; 
@@ -258,14 +269,19 @@ void main(void)
 
 
   rffc2071a_spi_write(0x16, 1);// set led lock
-  //P1 test 
-  rffc2071a_spi_write(0xc,0x15a8);
-  rffc2071a_spi_write(0xd, 0x4000);
+  //P1 LO  450 
+  rffc2071a_spi_write(0xc,0x1238);
+  rffc2071a_spi_write(0xd, 0x0000);
   rffc2071a_spi_write(0xe, 0x0000);
-  //P2 test
-  rffc2071a_spi_write(0xf, 0x15aa);
-  rffc2071a_spi_write(0x10, 0x4000);
+  //P2 test  450
+  rffc2071a_spi_write(0xf, 0x123a);
+  rffc2071a_spi_write(0x10, 0x0000);
   rffc2071a_spi_write(0x11, 0x0000);
+
+
+
+
+
 
   //loop filter
 //  rffc2071a_spi_write(6, 0x0000);
@@ -349,12 +365,12 @@ void main(void)
 static void SYNC_GPIO_Init()
 {
 
-   GPIO_Init(GPIOC, (GPIO_Pin_TypeDef)GPIO_Pin_0, GPIO_Mode_Out_PP_Low_Fast);
-   GPIO_Init(GPIOC, (GPIO_Pin_TypeDef)GPIO_Pin_1, GPIO_Mode_Out_PP_Low_Fast);
-   GPIO_Init(GPIOC, (GPIO_Pin_TypeDef)GPIO_Pin_2, GPIO_Mode_Out_PP_Low_Fast);
+   GPIO_Init(GPIOB, (GPIO_Pin_TypeDef)GPIO_Pin_0, GPIO_Mode_Out_PP_Low_Fast);
+   GPIO_Init(GPIOB, (GPIO_Pin_TypeDef)GPIO_Pin_1, GPIO_Mode_Out_PP_Low_Fast);
+   GPIO_Init(GPIOB, (GPIO_Pin_TypeDef)GPIO_Pin_2, GPIO_Mode_Out_PP_Low_Fast);
    GPIO_Init(GPIOC, (GPIO_Pin_TypeDef)GPIO_Pin_4, GPIO_Mode_Out_PP_Low_Fast   );
-   GPIO_Init(GPIOD, (GPIO_Pin_TypeDef)GPIO_Pin_0, GPIO_Mode_Out_PP_Low_Fast   );
    GPIO_Init(GPIOD, (GPIO_Pin_TypeDef)GPIO_Pin_1, GPIO_Mode_Out_PP_Low_Fast   );
+   GPIO_Init(GPIOD, (GPIO_Pin_TypeDef)GPIO_Pin_2, GPIO_Mode_Out_PP_Low_Fast   );
 }
 
 
