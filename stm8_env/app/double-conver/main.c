@@ -84,7 +84,7 @@ void main(void)
 
  /* GPIO PD0 (MASTER/SLAVE) */
   GPIO_Init(GPIOD, GPIO_Pin_0,  CLTMODE);
-  DAC_SetChannel1Data(DAC_Align_12b_R, current_voltage_value);
+  //DAC_SetChannel1Data(DAC_Align_12b_R, cur·rent_voltage_value);
 
 
 
@@ -102,14 +102,27 @@ void main(void)
     putchar('\r');
   }
 
-
    //-------- LO : dev 3    (reg1 =0x65 1683.34MHz)   (reg1=0x67 1716.67)  
+  
   // UART1_SendStr("wr xx xx");
-  Write_Tuner2400_Reg((uint16_t)0x0000,(uint16_t)0x00b4);                
+
+
+  for(i=0;i<10;i++)
+  {
+    // putchar('o');
+    Delay(0xffff);
+  }
+
+
+  Write_Tuner2400_Reg((uint16_t)0x0000,(uint16_t)0x0094);                
   Delay(0xFFFF);
    
-  Write_Tuner2400_Reg((uint16_t)0x0001,(uint16_t)0x0066); 
+  Write_Tuner2400_Reg((uint16_t)0x0001,(uint16_t)0x0067); //431MHz 
   Delay(0xFFFF);
+
+  Write_Tuner2400_Reg((uint16_t)0x0002,(uint16_t)0x0014);  
+  Delay(0xFFFF);
+
   Write_Tuner2400_Reg((uint16_t)0x000b,(uint16_t)0x0001);                
   Delay(0xFFFF);
    
@@ -119,10 +132,10 @@ void main(void)
    //----------------------------------------//
    
    //-------- LO : 825MHz   
-  Write_Tuner700_Reg((uint16_t)0x0000,(uint16_t)0x00a4);     
+  Write_Tuner700_Reg((uint16_t)0x0000,(uint16_t)0x00b4);     
   Delay(0xFFFF);
    
-  Write_Tuner700_Reg((uint16_t)0x0001,(uint16_t)0x005e);
+  Write_Tuner700_Reg((uint16_t)0x0001,(uint16_t)0x0057);
           
   Delay(0xFFFF);
   Write_Tuner700_Reg((uint16_t)0x000b,(uint16_t)0x0001);     
