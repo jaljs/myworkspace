@@ -1,5 +1,6 @@
 /**
-  ******************************************************************************
+  n
+/******************************************************************************
   * @file    Project/main.c 
   * @author  MCD Application Team
   * @version V2.1.0
@@ -225,7 +226,8 @@ void main(void)
 {
   uint16_t pllset = 0;
   uint16_t vcoset = 0;
-  uint16_t rb = 0; 
+  uint16_t rb = 0;
+ 
   SYNC_GPIO_Init();
   //Init_UART1();
   Delay(10000);
@@ -269,12 +271,66 @@ void main(void)
 
 
   rffc2071a_spi_write(0x16, 1);// set led lock
-  //P1 LO  450 
-  rffc2071a_spi_write(0xc,0x1238);
+ 
+
+//------LO 450  -----------//
+//P1 LO   p1:     0x0c  0x1238
+//p2 LO   p2: 	  0x0f  0x123a
+//-----------------------//
+
+
+//------LO 1081.25  -----------//
+//P1 LO   p1:      0x0c  0x15a8
+//P1 LO   p1:      0x0d  0x4000
+//P1 LO   p1:      0x0e  0x0000
+//P1 LO   p1:      0x0f  0x15aa
+//P1 LO   p1:      0x10  0x4000
+//P1 LO   p1:      0x11  0x0000
+//-----------------------//
+
+//------LO 525  -----------//
+//P1 LO   p1:      0x0c  0x1538
+//P1 LO   p1:      0x0d  0x0000
+//P1 LO   p1:      0x0e  0x0000
+//P1 LO   p1:      0x0f  0x153a
+//P1 LO   p1:      0x10  0x0000
+//P1 LO   p1:      0x11  0x0000
+//-----------------------//
+
+//------LO 630  -----------//
+//P1 LO   p1:      0x0c  0x1938
+//P1 LO   p1:      0x0d  0x0000
+//P1 LO   p1:      0x0e  0x0000
+//P1 LO   p1:      0x0f  0x193a
+//P1 LO   p1:      0x10  0x0000
+//P1 LO   p1:      0x11  0x0000
+//-----------------------//
+
+
+//------LO 900  -----------//
+//P1 LO   p1:      0x0c  0x1228
+//P1 LO   p1:      0x0d  0x0000
+//P1 LO   p1:      0x0e  0x0000
+//P1 LO   p1:      0x0f  0x122a
+//P1 LO   p1:      0x10  0x0000
+//P1 LO   p1:      0x11  0x0000
+//-----------------------//
+
+
+//------LO 950  -----------//
+//P1 LO   p1:      0x0c  0x1328
+//P1 LO   p1:      0x0d  0x0000
+//P1 LO   p1:      0x0e  0x0000
+//P1 LO   p1:      0x0f  0x132a
+//P1 LO   p1:      0x10  0x0000
+//P1 LO   p1:      0x11  0x0000
+//-----------------------//
+//   lo 
+  rffc2071a_spi_write(0xc,0x15a8);
   rffc2071a_spi_write(0xd, 0x0000);
   rffc2071a_spi_write(0xe, 0x0000);
-  //P2 test  450
-  rffc2071a_spi_write(0xf, 0x123a);
+  //P2 test  
+  rffc2071a_spi_write(0xf, 0x15aa);
   rffc2071a_spi_write(0x10, 0x0000);
   rffc2071a_spi_write(0x11, 0x0000);
 
