@@ -46,11 +46,11 @@ static void Delay_t();
 
 #define SPI_DATA(a)   a(GPIOC, GPIO_Pin_1);
 
-#define SPI_READ_DATA ((GPIO_ReadInputData(GPIOC) >> 1) & 1)//??????????????/
+#define SPI_READ_DATA ((GPIO_ReadInputData(GPIOC) >> 1) & 1)
 
 
 #define SPI_EN_1C        GPIO_WriteLow(GPIOC, GPIO_Pin_3);
-#define SPI_DIS_1C       GPIO_WriteHigh(GPIOB, GPIO_Pin_3);
+#define SPI_DIS_1C       GPIO_WriteHigh(GPIOC, GPIO_Pin_3);
 
 
 
@@ -226,14 +226,90 @@ void main(void)
   uint16_t vcoset = 0;
   uint16_t rb = 0;
  
+ int n=0; 
   SYNC_GPIO_Init();
+
+#if 1 
+ for (n = 0;n<5;n++)
+{
+Delay(0x1000);
   Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+}
+#else
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+  Delay(0x1000);
+#endif
+
+
+
   SPI_DIS_1C; 
   SPI_DIS_2C; 
 
 //---------------start set 1 conver--------------------//  
-  //rb = rffc2071a_spi_read(0x0f); //not use  do the spi bug
- // rffc2071a_spi_write(0xf, rb|0x00);
+  rb = rffc2071a_spi_read_1C(0x0f); //not use  do the spi bug
+  rffc2071a_spi_write_1C(0xf, rb|0x00);
 //  rffc2071a_spi_write(0x00,0xbef9);
   
   rffc2071a_spi_write_1C(8, 0xff00|(127 << 8));
@@ -329,9 +405,8 @@ void main(void)
 
 
 //---------------start set 2 conver--------------------//  
-
-  //rb = rffc2071a_spi_read(0x0f); //not use  do the spi bug
- // rffc2071a_spi_write(0xf, rb|0x00);
+	rb = rffc2071a_spi_read_2C(0x0f); //not use  do the spi bug
+ 	rffc2071a_spi_write_2C(0xf, rb|0x00);
 //  rffc2071a_spi_write(0x00,0xbef9);
   
   rffc2071a_spi_write_2C(8, 0xff00|(127 << 8));
