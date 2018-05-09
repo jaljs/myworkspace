@@ -46,8 +46,22 @@ static void Delay_t();
 
 #define SPI_DATA(a)   a(GPIOC, GPIO_Pin_1);
 
-#define SPI_READ_DATA ((GPIO_ReadInputData(GPIOC) >> 1) & 1)
+#define SPI_READ_DATA ((GPIO_ReadInputData(GPIOC) >> 1) & 1);
 
+
+//----------   EXT LNA   set  ----------//
+#define EXT_LNA1_LOW_IP3 GPIO_WriteHigh(GPIOD,GPIO_Pin_1);
+#define EXT_LNA2_LOW_IP3 GPIO_WriteHigh(GPIOD,GPIO_Pin_3);
+
+#define EXT_LNA1_ON GPIO_WriteHigh(GPIOD,GPIO_Pin_0);
+#define EXT_LNA1_OFF GPIO_WriteLow(GPIOD,GPIO_Pin_0);
+
+
+#define EXT_LNA2_ON GPIO_WriteHigh(GPIOD,GPIO_Pin_2);
+#define EXT_LNA2_OFF GPIO_WriteLow(GPIOD,GPIO_Pin_2);
+
+
+//--------------------------------//
 
 #define SPI_EN_1C        GPIO_WriteLow(GPIOC, GPIO_Pin_3);
 #define SPI_DIS_1C       GPIO_WriteHigh(GPIOC, GPIO_Pin_3);
@@ -60,6 +74,9 @@ static void Delay_t();
 
 #define SPI_READ      GPIO_Init(GPIOC, (GPIO_Pin_TypeDef)GPIO_Pin_1, GPIO_Mode_In_FL_No_IT);
 #define SPI_WRITE     GPIO_Init(GPIOC, (GPIO_Pin_TypeDef)GPIO_Pin_1, GPIO_Mode_Out_PP_Low_Fast);
+
+
+
 
 void clock_cycle()
 {
@@ -229,10 +246,17 @@ void main(void)
  int n=0; 
   SYNC_GPIO_Init();
 
-#if 1 
+// Externel  LNA  set    
+EXT_LNA1_LOW_IP3;
+ EXT_LNA2_LOW_IP3;
+ EXT_LNA1_ON;
+ EXT_LNA2_ON;
+//--------------
+
+
  for (n = 0;n<5;n++)
 {
-Delay(0x1000);
+	Delay(0x1000);
   Delay(0x1000);
   Delay(0x1000);
   Delay(0x1000);
@@ -245,62 +269,6 @@ Delay(0x1000);
   Delay(0x1000);
   Delay(0x1000);
 }
-#else
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-  Delay(0x1000);
-#endif
 
 
 
@@ -376,11 +344,11 @@ Delay(0x1000);
 //P1 LO   p1:      0x11  0x0000
 //-----------------------//
 //   lo 
-  rffc2071a_spi_write_1C(0xc,0x15a8);
+  rffc2071a_spi_write_1C(0xc,0x1238);
   rffc2071a_spi_write_1C(0xd, 0x0000);
   rffc2071a_spi_write_1C(0xe, 0x0000);
   //P2 test  
-  rffc2071a_spi_write_1C(0xf, 0x15aa);
+  rffc2071a_spi_write_1C(0xf, 0x1238);
   rffc2071a_spi_write_1C(0x10, 0x0000);
   rffc2071a_spi_write_1C(0x11, 0x0000);
 
@@ -472,12 +440,34 @@ Delay(0x1000);
 //P1 LO   p1:      0x10  0x0000
 //P1 LO   p1:      0x11  0x0000
 //-----------------------//
+
+
+//------LO 1450  -----------//
+//P1 LO   p1:      0x0c  0x1d14
+//P1 LO   p1:      0x0d  0x0000
+//P1 LO   p1:      0x0e  0x0000
+//P1 LO   p1:      0x0f  0x1d16
+//P1 LO   p1:      0x10  0x0000
+//P1 LO   p1:      0x11  0x0000
+//-----------------------//
+
+
+
+
+
+
+
+
+
+
+
+
 //   lo 
-  rffc2071a_spi_write_2C(0xc,0x15a8);
+  rffc2071a_spi_write_2C(0xc,0x1d14);
   rffc2071a_spi_write_2C(0xd, 0x0000);
   rffc2071a_spi_write_2C(0xe, 0x0000);
   //P2 test 
-  rffc2071a_spi_write_2C(0xf, 0x15aa);
+  rffc2071a_spi_write_2C(0xf, 0x1d16);
   rffc2071a_spi_write_2C(0x10, 0x0000);
   rffc2071a_spi_write_2C(0x11, 0x0000);
 
@@ -516,10 +506,19 @@ Delay(0x1000);
 static void SYNC_GPIO_Init()
 {
 
-   GPIO_Init(GPIOC, (GPIO_Pin_TypeDef)GPIO_Pin_3, GPIO_Mode_Out_PP_Low_Fast);
-   GPIO_Init(GPIOC, (GPIO_Pin_TypeDef)GPIO_Pin_2, GPIO_Mode_Out_PP_Low_Fast);
-   GPIO_Init(GPIOC, (GPIO_Pin_TypeDef)GPIO_Pin_1, GPIO_Mode_Out_PP_Low_Fast);
-   GPIO_Init(GPIOC, (GPIO_Pin_TypeDef)GPIO_Pin_0, GPIO_Mode_Out_PP_Low_Fast);
+   GPIO_Init(GPIOC, (GPIO_Pin_TypeDef)GPIO_Pin_3, GPIO_Mode_Out_PP_Low_Fast);//SPI cs1
+   GPIO_Init(GPIOC, (GPIO_Pin_TypeDef)GPIO_Pin_2, GPIO_Mode_Out_PP_Low_Fast);//SPI clk
+   GPIO_Init(GPIOC, (GPIO_Pin_TypeDef)GPIO_Pin_1, GPIO_Mode_Out_PP_Low_Fast);//SPI DATA
+   GPIO_Init(GPIOC, (GPIO_Pin_TypeDef)GPIO_Pin_0, GPIO_Mode_Out_PP_Low_Fast);//SPI cs2
+   
+//----------ext lna init  
+	GPIO_Init(GPIOD, (GPIO_Pin_TypeDef)GPIO_Pin_0, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIOD, (GPIO_Pin_TypeDef)GPIO_Pin_1, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIOD, (GPIO_Pin_TypeDef)GPIO_Pin_2, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIOD, (GPIO_Pin_TypeDef)GPIO_Pin_3, GPIO_Mode_Out_PP_Low_Fast);
+//---------------------
+
+
 
 }
 
