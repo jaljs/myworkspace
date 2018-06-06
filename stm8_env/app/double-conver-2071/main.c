@@ -296,6 +296,14 @@ EXT_LNA1_LOW_IP3;
 //p2 LO   p2: 	  0x0f  0x123a
 //-----------------------//
 
+//------LO 430  -----------//
+//P1 LO   p1:      0x0c  0x1138
+//P1 LO   p1:      0x0d  0x6666
+//P1 LO   p1:      0x0e  0x6600
+//P1 LO   p1:      0x0f  0x113a
+//P1 LO   p1:      0x10  0x6666
+//P1 LO   p1:      0x11  0x6600
+//-----------------------//
 
 //------LO 1081.25  -----------//
 //P1 LO   p1:      0x0c  0x15a8
@@ -317,11 +325,11 @@ EXT_LNA1_LOW_IP3;
 
 //------LO 630  -----------//
 //P1 LO   p1:      0x0c  0x1938
-//P1 LO   p1:      0x0d  0x0000
-//P1 LO   p1:      0x0e  0x0000
+//P1 LO   p1:      0x0d  0x6666
+//P1 LO   p1:      0x0e  0x6600
 //P1 LO   p1:      0x0f  0x193a
-//P1 LO   p1:      0x10  0x0000
-//P1 LO   p1:      0x11  0x0000
+//P1 LO   p1:      0x10  0x6666
+//P1 LO   p1:      0x11  0x6600
 //-----------------------//
 
 
@@ -343,12 +351,27 @@ EXT_LNA1_LOW_IP3;
 //P1 LO   p1:      0x10  0x0000
 //P1 LO   p1:      0x11  0x0000
 //-----------------------//
+
+
+//------LO 1405  -----------//
+//P1 LO   p1:      0x0c  0x1c14
+//P1 LO   p1:      0x0d  0x3333
+//P1 LO   p1:      0x0e  0x3300
+//P1 LO   p1:      0x0f  0x1c16
+//P1 LO   p1:      0x10  0x3333
+//P1 LO   p1:      0x11  0x3300
+//-----------------------//
+
+
+
+
+
 //   lo 
   rffc2071a_spi_write_1C(0xc,0x1238);
   rffc2071a_spi_write_1C(0xd, 0x0000);
   rffc2071a_spi_write_1C(0xe, 0x0000);
   //P2 test  
-  rffc2071a_spi_write_1C(0xf, 0x1238);
+  rffc2071a_spi_write_1C(0xf, 0x123a);
   rffc2071a_spi_write_1C(0x10, 0x0000);
   rffc2071a_spi_write_1C(0x11, 0x0000);
 
@@ -366,6 +389,7 @@ EXT_LNA1_LOW_IP3;
 //  rffc2071a_spi_write(0x10, 0xaa15);
 //  rffc2071a_spi_write(0x11, 0x6a << 8);
   rffc2071a_spi_write_1C(0x0b, 0x7e00);//tx rx mode
+  rffc2071a_spi_write_1C(0x18, 0x0281);//tx rx mode
  //low phase noise test
   rffc2071a_spi_write_1C(0x00, 0xfff9);//
   rffc2071a_spi_write_1C(0x09,0x8228 );//pll relock
@@ -403,44 +427,14 @@ EXT_LNA1_LOW_IP3;
 //P1 LO   p1:      0x11  0x0000
 //-----------------------//
 
-//------LO 525  -----------//
-//P1 LO   p1:      0x0c  0x1538
-//P1 LO   p1:      0x0d  0x0000
-//P1 LO   p1:      0x0e  0x0000
-//P1 LO   p1:      0x0f  0x153a
-//P1 LO   p1:      0x10  0x0000
-//P1 LO   p1:      0x11  0x0000
+//------LO 1405  -----------//
+//P1 LO   p1:      0x0c  0x1c14
+//P1 LO   p1:      0x0d  0x3333
+//P1 LO   p1:      0x0e  0x3300
+//P1 LO   p1:      0x0f  0x1c16
+//P1 LO   p1:      0x10  0x3333
+//P1 LO   p1:      0x11  0x3300
 //-----------------------//
-
-//------LO 630  -----------//
-//P1 LO   p1:      0x0c  0x1938
-//P1 LO   p1:      0x0d  0x0000
-//P1 LO   p1:      0x0e  0x0000
-//P1 LO   p1:      0x0f  0x193a
-//P1 LO   p1:      0x10  0x0000
-//P1 LO   p1:      0x11  0x0000
-//-----------------------//
-
-
-//------LO 900  -----------//
-//P1 LO   p1:      0x0c  0x1228
-//P1 LO   p1:      0x0d  0x0000
-//P1 LO   p1:      0x0e  0x0000
-//P1 LO   p1:      0x0f  0x122a
-//P1 LO   p1:      0x10  0x0000
-//P1 LO   p1:      0x11  0x0000
-//-----------------------//
-
-
-//------LO 950  -----------//
-//P1 LO   p1:      0x0c  0x1328
-//P1 LO   p1:      0x0d  0x0000
-//P1 LO   p1:      0x0e  0x0000
-//P1 LO   p1:      0x0f  0x132a
-//P1 LO   p1:      0x10  0x0000
-//P1 LO   p1:      0x11  0x0000
-//-----------------------//
-
 
 //------LO 1450  -----------//
 //P1 LO   p1:      0x0c  0x1d14
@@ -452,24 +446,71 @@ EXT_LNA1_LOW_IP3;
 //-----------------------//
 
 
+//------LO 650  -----------//
+//P1 LO   p1:      0x0c  0x1a38
+//P1 LO   p1:      0x0d  0x0000
+//P1 LO   p1:      0x0e  0x0000
+//P1 LO   p1:      0x0f  0x1a3a
+//P1 LO   p1:      0x10  0x0000
+//P1 LO   p1:      0x11  0x0000
+//-----------------------//
 
 
+//------LO 725  -----------//
+//P1 LO   p1:      0x0c  0x1d24
+//P1 LO   p1:      0x0d  0x0000
+//P1 LO   p1:      0x0e  0x0000
+//P1 LO   p1:      0x0f  0x1d26
+//P1 LO   p1:      0x10  0x0000
+//P1 LO   p1:      0x11  0x0000
+//-----------------------//
 
 
+//------LO 800  -----------//
+//P1 LO   p1:      0x0c  0x2024
+//P1 LO   p1:      0x0d  0x0000
+//P1 LO   p1:      0x0e  0x0000
+//P1 LO   p1:      0x0f  0x2026
+//P1 LO   p1:      0x10  0x0000
+//P1 LO   p1:      0x11  0x0000
+//-----------------------//
 
 
+//------LO 875  -----------//
+//P1 LO   p1:      0x0c  0x11a8
+//P1 LO   p1:      0x0d  0x0000
+//P1 LO   p1:      0x0e  0x0000
+//P1 LO   p1:      0x0f  0x11aa
+//P1 LO   p1:      0x10  0x0000
+//P1 LO   p1:      0x11  0x0000
+//-----------------------//
 
 
-
+#if 0 //1-->test
 
 //   lo 
-  rffc2071a_spi_write_2C(0xc,0x1d14);
+  rffc2071a_spi_write_2C(0xc,0x1238);
   rffc2071a_spi_write_2C(0xd, 0x0000);
   rffc2071a_spi_write_2C(0xe, 0x0000);
   //P2 test 
-  rffc2071a_spi_write_2C(0xf, 0x1d16);
+  rffc2071a_spi_write_2C(0xf, 0x123a);
   rffc2071a_spi_write_2C(0x10, 0x0000);
   rffc2071a_spi_write_2C(0x11, 0x0000);
+#else
+
+  rffc2071a_spi_write_2C(0xc,0x11a8);
+  rffc2071a_spi_write_2C(0xd, 0x0000);
+  rffc2071a_spi_write_2C(0xe, 0x0000);
+  //P2 test 
+  rffc2071a_spi_write_2C(0xf, 0x11aa);
+  rffc2071a_spi_write_2C(0x10, 0x0000);
+  rffc2071a_spi_write_2C(0x11, 0x0000);
+#endif
+
+
+
+
+
 
 
   //loop filter
